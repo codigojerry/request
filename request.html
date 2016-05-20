@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Request Get</title>
+  <!--http://www.jqueryscript.net/other/jQuery-Based-Pretty-Collapsible-JSON-Tree-Viewer.html-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="tree/dist/jquery.json-view.js"></script>
+  <link href="tree/dist/jquery.json-view.css" rel="stylesheet">  
+
+  <script type="text/javascript">
+
+  $(document).ready(function(){
+    $("#btn").click(function(){
+
+       $("#peticion").html("");  
+
+       var url= $("#caja").val();
+       if(url!=""){
+
+        $.ajax({url: url, 
+                type: "GET", 
+                cache: false,
+                success: function(result,status,xhr){
+                  $("#peticion").html("<img src='http://www.xippy.co.uk/images/icon_status_OK.gif' /> "+xhr.statusText+" "+xhr.status+" "+status);//estado del request
+                  $('#rest').html("");  //si no limpio los resultados del request se van concatenando                
+                  $('#rest').jsonView(result);
+                }, 
+                error: function(xhr,status,error)  {
+                  $("#peticion").html("<img src='https://www.withoutabox.com/images/icons/icon_not_accepted.gif' /> "+xhr.statusText+" "+xhr.status+" "+status);
+                  $('#rest').html("");
+                } 
+
+            });     
+
+       }else{ document.getElementById("rest").innerHTML="Ingrese un valor"; }
+
+    });  
+  });
+  </script>
+
+</head>
+
+<body>
+
+
+<h2>Request Get</h2>
+<input type="text" id="caja" value="http://api.taringa.net/user/view/1849292" required="required" size="70" placeholder="URL" />
+<button type="button" id="btn">Ok</button>
+<hr>
+
+<div id="peticion"></div>
+<div id="rest"></div>
+
+</body>
+</html>
